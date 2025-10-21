@@ -1,12 +1,19 @@
-class AddSpecificFieldsToMaterials < ActiveRecord::Migration[7.1]
+class CreateMaterials < ActiveRecord::Migration[7.1]
   def change
-    add_column :materials, :isbn,             :string   # variavel para identificar materiais do tipo Book
-    add_column :materials, :page_count,       :integer  # armazena quantidade de paginas de Book
-    add_column :materials, :doi,              :string   # identificador do artigo 
-    add_column :materials, :duration_minutes, :integer  # duração do Video
+    create_table :materials do |t|
+      t.string  :type, null: false           #tipos do material 
+      t.string  :title, null: false
+      t.text    :description
+      t.integer :status, null: false, default: 0 
 
-    # Unicidade por tipo de identificador
-    add_index :materials, :isbn, unique: true, where: "isbn IS NOT NULL"
-    add_index :materials, :doi,  unique: true, where: "doi IS NOT NULL"
+      t.references :author,  null: false, foreign_key: true
+      t.references :creator, null: false, foreign_key: { to_table: :users }
+
+      t.timestamps
+    end
+
+    add_index :materials, :type
+    add_index :materials, :status
+    add_index :materials, :title
   end
 end
