@@ -10,9 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_21_144825) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_21_233114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "authors", force: :cascade do |t|
+    t.string "type", null: false
+    t.string "name", null: false
+    t.date "birthdate"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_authors_on_name"
+    t.index ["type"], name: "index_authors_on_type"
+  end
+
+  create_table "materials", force: :cascade do |t|
+    t.string "type", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "status", default: 0, null: false
+    t.bigint "author_id", null: false
+    t.bigint "creator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "isbn"
+    t.string "doi"
+    t.integer "page_count"
+    t.integer "duration_minutes"
+    t.index ["author_id"], name: "index_materials_on_author_id"
+    t.index ["creator_id"], name: "index_materials_on_creator_id"
+    t.index ["status"], name: "index_materials_on_status"
+    t.index ["title"], name: "index_materials_on_title"
+    t.index ["type"], name: "index_materials_on_type"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -25,4 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_21_144825) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "materials", "authors"
+  add_foreign_key "materials", "users", column: "creator_id"
 end
