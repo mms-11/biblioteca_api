@@ -1,0 +1,172 @@
+{
+  "info": {
+    "name": "Biblioteca API",
+    "description": "API para gerenciamento de materiais bibliográficos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearer_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Materials",
+      "item": [
+        {
+          "name": "Lista materiais (públicos e seus)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/materials",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "materials"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": null,
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": null,
+                  "disabled": true
+                },
+                {
+                  "key": "per",
+                  "value": "",
+                  "description": null,
+                  "disabled": true
+                }
+              ]
+            },
+            "description": null
+          }
+        },
+        {
+          "name": "Cria material",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearer_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/materials",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "materials"
+              ]
+            },
+            "description": null
+          }
+        },
+        {
+          "name": "Mostra material",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/materials/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "materials",
+                ":id"
+              ]
+            },
+            "description": null
+          }
+        },
+        {
+          "name": "Atualiza material",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearer_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/materials/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "materials",
+                ":id"
+              ]
+            },
+            "description": null
+          }
+        },
+        {
+          "name": "Remove material",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{bearer_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/materials/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "materials",
+                ":id"
+              ]
+            },
+            "description": null
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "bearer_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

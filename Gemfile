@@ -34,6 +34,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
+  gem 'postman_collection_generator'
 end
 
 gem "webmock", "~> 3.25", groups: [:development, :test]
