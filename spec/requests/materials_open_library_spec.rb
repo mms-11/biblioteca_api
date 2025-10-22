@@ -1,31 +1,20 @@
 require 'rails_helper'
 require 'webmock/rspec'
+require 'warden/jwt_auth'   # para gerar o token manualmente
 
 RSpec.describe "Materials (OpenLibrary enrichment)", type: :request do
   let!(:user)   { User.create!(email: 'jwt@demo.com', password: 'secret123') }
   let!(:author) { InstitutionAuthor.create!(name: 'CIN/UFPE', city: 'Recife') }
 
-  # helper para token JWT (Devise+JWT despacha Authorization no header)
-  def auth_token_for(user)
-    post '/users/sign_in.json',
-      params: { user: { email: user.email, password: 'secret123' } }.to_json,
-      headers: { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
-
-    # DEBUG: Vamos ver o que está sendo retornado
-    puts "Status: #{response.status}"
-    puts "Body: #{response.body}"
-    puts "Headers: #{response.headers.inspect}"
-
-    # Aceita 200 (ok) ou 201 (created), depende da tua implementação
-    expect(response).to have_http_status(:ok).or have_http_status(:created)
-
-    token = response.headers['Authorization']
-    raise "JWT não retornado no header Authorization. Body: #{response.body}" if token.blank?
-    token
+  # Gera um Bearer JWT válido para o usuário (sem chamar /users/sign_in)
+  def bearer_for(user)
+    encoder = Warden::JWTAuth::UserEncoder.new
+    token, _payload = encoder.call(user, :user, nil) # :user é o Devise scope
+    "Bearer #{token}"
   end
 
   it 'preenche title e page_count quando ausentes para Book com ISBN' do
-    token = auth_token_for(user)
+    token = bearer_for(user)
 
     isbn = '9780131103627'
     payload = {
@@ -50,6 +39,7 @@ RSpec.describe "Materials (OpenLibrary enrichment)", type: :request do
         status: 'draft',
         author_id: author.id,
         isbn: isbn
+        # sem title e sem page_count de propósito
       }.to_json
 
     expect(response).to have_http_status(:created)

@@ -2,7 +2,7 @@ class Api::V1::MaterialsController < ApplicationController
   before_action :set_material, only: %i[show update destroy] #carregar a classe material antes de executar os tratamentos 
 #organizando api por versao (v1)
 
-  # leitura pública (publicados) e privada (seus próprios via scope)
+  # leitura pública (publicados) e privada (arquivos proporios do autor via scope)
   skip_before_action :authenticate_user!, only: %i[index show]
 
   def index
@@ -16,12 +16,12 @@ class Api::V1::MaterialsController < ApplicationController
   end
 
   def show
-    authorize @material
+    authorize @material, policy_class: MaterialPolicy
     render json: material_json(@material)
   end
 
   def create
-    authorize Material
+    authorize Material, policy_class:MaterialPolicy
     klass = (params[:type] || 'Material').safe_constantize #transforma string em classe 
     return render json: { error: 'type inválido' }, status: :unprocessable_entity unless klass && klass <= Material
 
@@ -29,6 +29,8 @@ class Api::V1::MaterialsController < ApplicationController
 
     # OpenLibrary: se for Book e faltarem campos, completar
     enrich_from_openlibrary(material) if material.is_a?(Book)
+    # Usando MaterialPolicy para os tipos (subclasses) de material herdarem a mesma politicia de material!!!
+  authorize material, policy_class: MaterialPolicy
 
     authorize material
     if material.save
@@ -39,7 +41,7 @@ class Api::V1::MaterialsController < ApplicationController
   end
 
   def update
-    authorize @material
+    authorize @material, policy_class: MaterialPolicy
     klass = @material.class
     if @material.update(base_params.merge(specific_params(klass)))
       render json: material_json(@material)
@@ -49,7 +51,7 @@ class Api::V1::MaterialsController < ApplicationController
   end
 
   def destroy
-    authorize @material
+    authorize @material, policy_class: MaterialPolicy
     @material.destroy
     head :no_content
   end

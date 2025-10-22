@@ -1,0 +1,2 @@
+class BookPolicy < MaterialPolicy
+end
