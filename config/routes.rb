@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   # Namespace da API 
   namespace :api do
     namespace :v1 do
+      resources :authors          # rotas para autores GET/POST /api/v1/authors, /api/v1/authors/:id
+      resources :materials        # rotas para materiais GET/POST /api/v1/materials, GET/PATCH/DELETE /api/v1/materials/:id
       get "ping", to: "ping#index"
     end
   end
