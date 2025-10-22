@@ -7,7 +7,12 @@ Rails.application.routes.draw do
   post "/graphql", to: "graphql#execute"
 
   # Autenticação Devise (JSON)
-  devise_for :users, defaults: { format: :json }
+  devise_for :users, 
+    defaults: { format: :json },
+    controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
