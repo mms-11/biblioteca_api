@@ -35,3 +35,5 @@ group :development, :test do
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
 end
+
+gem "webmock", "~> 3.25", groups: [:development, :test]
