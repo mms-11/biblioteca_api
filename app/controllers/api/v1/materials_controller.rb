@@ -75,14 +75,21 @@ class Api::V1::MaterialsController < ApplicationController
     end
   end
 
-  def enrich_from_openlibrary(book)
-    return if book.isbn.blank?
-    data = OpenLibraryClient.fetch_by_isbn(book.isbn)
-    book.title      = data[:title] if book.title.blank? && data[:title].present?
-    book.page_count = data[:number_of_pages] if book.page_count.blank? && data[:number_of_pages].present?
-  rescue => e
-    Rails.logger.warn "OpenLibrary enrichment failed: #{e.message}"
-  end
+def enrich_from_openlibrary(book)
+  return if book.isbn.blank?
+
+  need_title = book.title.blank?
+  need_pages = book.page_count.blank?
+  return unless need_title || need_pages  # só chama a API se faltar algo
+
+  data = OpenLibraryClient.fetch_by_isbn(book.isbn)
+  book.title      = data[:title] if need_title && data[:title].present?
+  book.page_count = data[:number_of_pages] if need_pages && data[:number_of_pages].present?
+rescue => e
+  Rails.logger.warn "OpenLibrary enrichment failed: #{e.message}"
+end
+
+
 
   def material_json(m)
     m.as_json(only: %i[id type title description status],

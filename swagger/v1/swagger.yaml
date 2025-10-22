@@ -1,0 +1,132 @@
+---
+openapi: 3.0.1
+info:
+  title: Biblioteca API
+  version: v1
+  description: API RESTful da Biblioteca Digital
+servers:
+- url: http://localhost:3000
+  description: Dev
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []
+paths:
+  "/api/v1/materials":
+    get:
+      summary: Lista materiais (públicos e seus)
+      tags:
+      - Materials
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: Cria material
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              - title
+              - status
+              - author_id
+              properties:
+                type:
+                  type: string
+                  example: Book
+                title:
+                  type: string
+                  example: Estruturas de Dados
+                description:
+                  type: string
+                  nullable: true
+                status:
+                  type: string
+                  example: draft
+                author_id:
+                  type: integer
+                  example: 1
+                isbn:
+                  type: string
+                  example: '9781234567890'
+                page_count:
+                  type: integer
+                  example: 120
+  "/api/v1/materials/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: ID do material
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Mostra material
+      tags:
+      - Materials
+      responses:
+        '200':
+          description: ok
+    patch:
+      summary: Atualiza material
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: ok
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                status:
+                  type: string
+    delete:
+      summary: Remove material
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: no content

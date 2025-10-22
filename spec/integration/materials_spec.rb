@@ -1,6 +1,14 @@
 require 'swagger_helper'
+require 'webmock/rspec'
 
 RSpec.describe 'api/v1/materials', type: :request do
+  before do
+    # stub genérico para qualquer chamada à OpenLibrary
+    stub_request(:get, "https://openlibrary.org/api/books")
+      .with(query: hash_including(format: "json", jscmd: "data"))
+      .to_return(status: 200, body: {}.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+  
   let(:user)   { User.create!(email: 'doc@demo.com', password: 'secret123') }
   let(:author) { InstitutionAuthor.create!(name: 'CIN/UFPE', city: 'Recife') }
   let(:Authorization) do
@@ -12,11 +20,16 @@ RSpec.describe 'api/v1/materials', type: :request do
     get('Lista materiais (públicos e seus)') do
       tags 'Materials'
       produces 'application/json'
-      parameter name: :q, in: :query, type: :string
-      parameter name: :page, in: :query, type: :integer
-      parameter name: :per, in: :query, type: :integer
+      parameter name: :q, in: :query, type: :string, required: false
+      parameter name: :page, in: :query, type: :integer, required: false
+      parameter name: :per, in: :query, type: :integer, required: false
 
       response(200, 'ok') do
+        # ADD THESE LINES to provide default values for the parameters:
+        let(:q) { nil }
+        let(:page) { nil }
+        let(:per) { nil }
+        
         run_test!
       end
     end
@@ -69,6 +82,14 @@ RSpec.describe 'api/v1/materials', type: :request do
       tags 'Materials'
       consumes 'application/json'
       security [ bearerAuth: [] ]
+      parameter name: :body, in: :body, schema: {
+        type: :object,
+        properties: {
+          title: { type: :string },
+          description: { type: :string },
+          status: { type: :string }
+        }
+      }
       response(200, 'ok') do
         let(:Authorization) { super() }
         let(:id) { Book.create!(title: 'Meu', status: :draft, author:, creator: user, isbn: '9781234567801', page_count: 11).id }
