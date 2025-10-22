@@ -7,7 +7,7 @@ RSpec.describe "Materials (OpenLibrary enrichment)", type: :request do
 
   # helper para token JWT (Devise+JWT despacha Authorization no header)
   def auth_token_for(user)
-    post '/users/sign_in',
+    post '/users/sign_in.json',
       params: { user: { email: user.email, password: 'secret123' } }.to_json,
       headers: { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json' }
 
