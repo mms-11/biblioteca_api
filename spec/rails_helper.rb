@@ -6,6 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 
 require 'rspec/rails'
 
+# Carregue helpers extras se quiser:
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 begin
@@ -16,16 +17,12 @@ end
 
 RSpec.configure do |config|
   config.fixture_paths = [Rails.root.join('spec/fixtures')]
-
   config.use_transactional_fixtures = true
-
-  # Habilite se quiser que o tipo de spec seja inferido pelo caminho (útil)
   config.infer_spec_type_from_file_location!
-
   config.filter_rails_from_backtrace!
 end
 
-# Shoulda Matchers (fora do RSpec.configure)
+# Shoulda Matchers (fora do bloco RSpec.configure)
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
