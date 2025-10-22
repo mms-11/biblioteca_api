@@ -1,11 +1,12 @@
 class Api::V1::MaterialsController < ApplicationController
-  before_action :set_material, only: %i[show update destroy]
+  before_action :set_material, only: %i[show update destroy] #carregar a classe material antes de executar os tratamentos 
+#organizando api por versao (v1)
 
   # leitura pública (publicados) e privada (seus próprios via scope)
   skip_before_action :authenticate_user!, only: %i[index show]
 
   def index
-    materials = policy_scope(Material)
+    materials = policy_scope(Material) #listar os parametros (campos) do material que passaram na regra de material_policy
                   .includes(:author)
                   .search(params[:q])
                   .order(created_at: :desc)
@@ -21,7 +22,7 @@ class Api::V1::MaterialsController < ApplicationController
 
   def create
     authorize Material
-    klass = (params[:type] || 'Material').safe_constantize
+    klass = (params[:type] || 'Material').safe_constantize #transforma string em classe 
     return render json: { error: 'type inválido' }, status: :unprocessable_entity unless klass && klass <= Material
 
     material = klass.new(base_params.merge(creator: current_user).merge(specific_params(klass)))
