@@ -18,7 +18,7 @@ RSpec.describe Book, type: :model do
   end
 
   it 'exige page_count > 0' do
-    b = Book.new(title: 'X', status: :draft, author:, creator: user, isbn: '9781234567891', page_count: 0)e
+    b = Book.new(title: 'X', status: :draft, author:, creator: user, isbn: '9781234567891', page_count: 0)
     expect(b.valid?).to be false
     expect(b.errors[:page_count]).to be_present
   end
