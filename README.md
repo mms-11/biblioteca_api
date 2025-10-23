@@ -12,7 +12,7 @@ API RESTful completa para gerenciamento de biblioteca com autenticação JWT via
 ## 🌐 Links Importantes
 
 - **🌍 API Base URL**: https://biblioteca-api-aibp.onrender.com
-- **📖 Documentação Swagger**: https://biblioteca-api-aibp.onrender.com/api-docs
+- **📖 Documentação Swagger**: https://biblioteca-api-aibp.onrender.com/docs/index.html
 - **🎨 Interface Swagger**: https://biblioteca-api-aibp.onrender.com/docs
 - **💻 Repositório**: https://github.com/mms-11/biblioteca_api
 
