@@ -44,11 +44,11 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
 
   # Use simple cache store and job adapter for now
-  config.cache_store = :memory_store
+  config.cache_store = :solid_cache_store
   config.active_job.queue_adapter = :async
 
   # Comment out ALL solid_* configurations:
-  # config.cache_store = :solid_cache_store
+  config.cache_store = :solid_cache_store
   # config.active_job.queue_adapter = :solid_queue
   # config.solid_queue.connects_to = { database: { writing: :queue } }
   # config.solid_cable.connects_to = { database: { writing: :primary } }  # ← REMOVE THIS LINE
