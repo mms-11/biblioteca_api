@@ -48,11 +48,10 @@ API RESTful completa para gerenciamento de biblioteca com autenticação JWT via
 - [Configuração](#️-configuração)
 - [Autenticação](#-autenticação)
 - [Endpoints da API](#-endpoints-da-api)
+- [Script de Teste Automatizado](#-script-de-teste-automatizado)
+- [Testes](#-testes)
 - [Exemplos Práticos](#-exemplos-práticos)
 - [GraphQL](#-graphql)
-- [Regras de Negócio](#-regras-de-negócio)
-- [Testes](#-testes)
-- [Script de Teste Automatizado](#-script-de-teste-automatizado)
 - [Deploy](#-deploy)
 
 ---
