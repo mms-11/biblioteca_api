@@ -87,11 +87,13 @@ Rails.application.configure do
 
 
   # Configurar Solid Cable para usar o mesmo banco de dados principal
-  config.solid_cable.database = ActiveRecord::Base.connection_db_config
+ config.solid_cable.database = ActiveRecord::Base.connection_db_config
 
 #  Solid Queue para usar a mesma conexão
-  config.solid_queue.connects_to = { database: { writing: :primary } }
+  #config.solid_queue.connects_to = { database: { writing: :primary } }
 
 #  Solid Cache para usar o mesmo banco
-  config.solid_cache.connects_to = { database: { writing: :primary } }
+  #config.solid_cache.connects_to = { database: { writing: :primary } }
+  config.cache_store = :memory_store
+  config.active_job.queue_adapter = :async
 end
