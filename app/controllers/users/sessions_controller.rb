@@ -5,8 +5,15 @@ class Users::SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource, store: false)
 
-    response.headers['Authorization'] = "Bearer #{request.env['warden-jwt_auth.token']}"
-    render json: { message: 'signed_in', user: { id: resource.id, email: resource.email }, token: token }, status: :ok
+    # O token é gerado automaticamente pelo devise-jwt e colocado no header
+    token = request.env['warden-jwt_auth.token']
+    
+    response.headers['Authorization'] = "Bearer #{token}"
+    render json: { 
+      message: 'signed_in', 
+      user: { id: resource.id, email: resource.email }, 
+      token: token 
+    }, status: :ok
   end
 
   def destroy
