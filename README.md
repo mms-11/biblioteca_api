@@ -254,6 +254,141 @@ curl -X DELETE "$API_BASE/users/sign_out" \
 | POST | `/graphql` | Endpoint GraphQL |
 
 ---
+## 🧪 Testes
+
+### Executar Testes
+
+```bash
+# Todos os testes
+bundle exec rspec
+
+# Testes específicos por tipo
+bundle exec rspec spec/models
+bundle exec rspec spec/requests
+bundle exec rspec spec/controllers
+
+# Com relatório de cobertura
+COVERAGE=true bundle exec rspec
+
+# Ver relatório HTML
+open coverage/index.html
+```
+
+### Estatísticas de Testes
+
+- **Total de testes**: 48 exemplos
+- **Cobertura de linha**: 86.78%
+- **Cobertura de branch**: 54.55%
+- **Tempo de execução**: ~3 segundos
+- **Falhas**: 0
+
+### Áreas Testadas
+
+#### Models
+- ✅ Validações de campos obrigatórios
+- ✅ Validações de formatos (email, ISBN)
+- ✅ Associações entre modelos
+- ✅ Callbacks e métodos personalizados
+- ✅ STI (Single Table Inheritance)
+- ✅ Scopes e queries
+
+#### Controllers/Requests
+- ✅ Autenticação e autorização
+- ✅ CRUD completo de todos os recursos
+- ✅ Respostas HTTP corretas
+- ✅ Validação de permissões por role
+- ✅ Tratamento de erros
+- ✅ Formatação JSON
+
+#### Services
+- ✅ Lógica de negócio
+- ✅ Integração com API externa
+- ✅ Processamento de dados
+
+#### GraphQL
+- ✅ Queries de listagem
+- ✅ Queries de busca por ID
+- ✅ Mutations (quando aplicável)
+- ✅ Tratamento de erros
+
+---
+
+## 🧪 Script de Teste Automatizado
+
+A API inclui um script completo para validar todos os endpoints e funcionalidades.
+
+### Executar o Script
+
+```bash
+# 1. Dê permissão de execução
+chmod +x test_api.sh
+
+# 2. Execute
+./test_api.sh
+```
+
+### O que o Script Testa
+
+- ✅ **Health Check** - Verifica se a API está online
+- ✅ **Autenticação** - Login e obtenção de token JWT
+- ✅ **Listagem** - Autores e materiais
+- ✅ **Criação** - Novos autores e materiais
+- ✅ **GraphQL** - Queries e consultas
+- ✅ **Logout** - Encerramento de sessão
+
+### Exemplo de Saída
+
+```
+🚀 Testando Biblioteca API
+================================
+
+📋 Setup inicial
+✅ API Base: https://biblioteca-api-aibp.onrender.com
+
+🏥 Health Check
+✅ API está online!
+
+🔐 Fazendo login como Admin
+✅ Token obtido com sucesso!
+
+📚 Listando autores (primeiros 3)
+Total de autores: 13
+
+📖 Listando materiais (primeiros 3)
+Total de materiais: 2
+
+➕ Criando novo autor (Isaac Asimov)
+✅ Autor criado com sucesso!
+
+📚 Criando novo material (Livro)
+✅ Material criado com sucesso!
+
+🔮 Testando GraphQL
+✅ GraphQL funcionando!
+
+🚪 Testando logout
+✅ Logout realizado com sucesso!
+
+================================
+🎉 Todos os testes concluídos!
+
+📊 Resumo:
+  • API Online: ✅
+  • Autenticação: ✅
+  • Autores: 13 registrados
+  • Materiais: 2 registrados
+  • GraphQL: ✅
+  • CRUD: ✅
+
+📚 Documentação completa:
+  • Swagger: https://biblioteca-api-aibp.onrender.com/docs
+  • API Docs: https://biblioteca-api-aibp.onrender.com/api-docs
+
+✨ Biblioteca API está funcionando perfeitamente!
+```
+
+---
+
 
 ## 💡 Exemplos Práticos
 
@@ -584,241 +719,7 @@ mutation {
 
 ---
 
-## 📖 Regras de Negócio
 
-### Sistema de Autores (STI - Single Table Inheritance)
-
-A API implementa herança de tabela única para autores:
-
-#### 1. PersonAuthor (Autor Pessoa)
-- **Campos**: `name`, `birthdate`
-- **Uso**: Autores individuais (escritores, pesquisadores)
-- **Exemplo**: George Orwell, Isaac Asimov, J.K. Rowling
-
-#### 2. InstitutionAuthor (Autor Instituição)
-- **Campos**: `name`, `city`
-- **Uso**: Organizações, universidades, editoras
-- **Exemplo**: MIT, Stanford University, IEEE
-
-#### Validações de Autores
-- Nome obrigatório (mínimo 3 caracteres)
-- Type deve ser "PersonAuthor" ou "InstitutionAuthor"
-- Birthdate deve ser no passado (PersonAuthor)
-- Nome único por tipo
-
----
-
-### Sistema de Materiais
-
-#### Tipos de Materiais
-A API suporta múltiplos tipos através de STI:
-
-1. **Book (Livro)**
-   - Campos específicos: `isbn`, `page_count`
-   - Validação de ISBN único
-   
-2. **Magazine (Revista)**
-   - Campos específicos: `issue_number`, `edition`
-   
-3. **DVD**
-   - Campos específicos: `duration`, `director`
-
-#### Campos Comuns
-- `title` (obrigatório, mínimo 3 caracteres)
-- `type` (obrigatório)
-- `description` (opcional)
-- `status` (obrigatório)
-- `author_id` (obrigatório - relacionamento)
-
-#### Status dos Materiais
-- `draft` - Rascunho, ainda não publicado
-- `published` - Publicado e disponível
-- `archived` - Arquivado, não disponível
-
-#### Validações
-- Título obrigatório e único
-- Type obrigatório
-- ISBN único (quando informado)
-- Material deve ter um autor associado
-- Status deve ser um dos valores válidos
-
----
-
-### Associações
-
-```
-Author (STI)
-├── PersonAuthor
-│   └── has_many :materials
-└── InstitutionAuthor
-    └── has_many :materials
-
-Material (STI)
-├── Book
-├── Magazine
-└── DVD
-    └── belongs_to :author (polimórfico via STI)
-```
-
----
-
-### Sistema de Permissões
-
-#### Admin
-- ✅ Acesso total à API
-- ✅ CRUD completo em todos os recursos
-- ✅ Pode deletar qualquer registro
-- ✅ Gerenciar usuários e permissões
-
-#### Bibliotecário
-- ✅ CRUD de materiais
-- ✅ CRUD de autores
-- ✅ Visualizar todos os recursos
-- ❌ Não pode deletar recursos
-- ❌ Não pode gerenciar usuários
-
-#### Usuário
-- ✅ Visualizar materiais (GET)
-- ✅ Visualizar autores (GET)
-- ❌ Não pode criar/editar/deletar
-- ❌ Não pode acessar recursos administrativos
-
----
-
-## 🧪 Testes
-
-### Executar Testes
-
-```bash
-# Todos os testes
-bundle exec rspec
-
-# Testes específicos por tipo
-bundle exec rspec spec/models
-bundle exec rspec spec/requests
-bundle exec rspec spec/controllers
-
-# Com relatório de cobertura
-COVERAGE=true bundle exec rspec
-
-# Ver relatório HTML
-open coverage/index.html
-```
-
-### Estatísticas de Testes
-
-- **Total de testes**: 48 exemplos
-- **Cobertura de linha**: 86.78%
-- **Cobertura de branch**: 54.55%
-- **Tempo de execução**: ~3 segundos
-- **Falhas**: 0
-
-### Áreas Testadas
-
-#### Models
-- ✅ Validações de campos obrigatórios
-- ✅ Validações de formatos (email, ISBN)
-- ✅ Associações entre modelos
-- ✅ Callbacks e métodos personalizados
-- ✅ STI (Single Table Inheritance)
-- ✅ Scopes e queries
-
-#### Controllers/Requests
-- ✅ Autenticação e autorização
-- ✅ CRUD completo de todos os recursos
-- ✅ Respostas HTTP corretas
-- ✅ Validação de permissões por role
-- ✅ Tratamento de erros
-- ✅ Formatação JSON
-
-#### Services
-- ✅ Lógica de negócio
-- ✅ Integração com API externa
-- ✅ Processamento de dados
-
-#### GraphQL
-- ✅ Queries de listagem
-- ✅ Queries de busca por ID
-- ✅ Mutations (quando aplicável)
-- ✅ Tratamento de erros
-
----
-
-## 🧪 Script de Teste Automatizado
-
-A API inclui um script completo para validar todos os endpoints e funcionalidades.
-
-### Executar o Script
-
-```bash
-# 1. Dê permissão de execução
-chmod +x test_api.sh
-
-# 2. Execute
-./test_api.sh
-```
-
-### O que o Script Testa
-
-- ✅ **Health Check** - Verifica se a API está online
-- ✅ **Autenticação** - Login e obtenção de token JWT
-- ✅ **Listagem** - Autores e materiais
-- ✅ **Criação** - Novos autores e materiais
-- ✅ **GraphQL** - Queries e consultas
-- ✅ **Logout** - Encerramento de sessão
-
-### Exemplo de Saída
-
-```
-🚀 Testando Biblioteca API
-================================
-
-📋 Setup inicial
-✅ API Base: https://biblioteca-api-aibp.onrender.com
-
-🏥 Health Check
-✅ API está online!
-
-🔐 Fazendo login como Admin
-✅ Token obtido com sucesso!
-
-📚 Listando autores (primeiros 3)
-Total de autores: 13
-
-📖 Listando materiais (primeiros 3)
-Total de materiais: 2
-
-➕ Criando novo autor (Isaac Asimov)
-✅ Autor criado com sucesso!
-
-📚 Criando novo material (Livro)
-✅ Material criado com sucesso!
-
-🔮 Testando GraphQL
-✅ GraphQL funcionando!
-
-🚪 Testando logout
-✅ Logout realizado com sucesso!
-
-================================
-🎉 Todos os testes concluídos!
-
-📊 Resumo:
-  • API Online: ✅
-  • Autenticação: ✅
-  • Autores: 13 registrados
-  • Materiais: 2 registrados
-  • GraphQL: ✅
-  • CRUD: ✅
-
-📚 Documentação completa:
-  • Swagger: https://biblioteca-api-aibp.onrender.com/docs
-  • API Docs: https://biblioteca-api-aibp.onrender.com/api-docs
-
-✨ Biblioteca API está funcionando perfeitamente!
-```
-
----
 
 ## 🚀 Deploy
 
@@ -906,52 +807,7 @@ curl https://biblioteca-api-aibp.onrender.com/api-docs/v1/swagger.yaml > swagger
 
 ---
 
-## 📁 Estrutura do Projeto
 
-```
-biblioteca_api/
-├── app/
-│   ├── controllers/
-│   │   ├── api/v1/              # Controllers da API REST
-│   │   │   ├── authors_controller.rb
-│   │   │   └── materials_controller.rb
-│   │   ├── users/               # Controllers do Devise
-│   │   │   ├── sessions_controller.rb
-│   │   │   └── registrations_controller.rb
-│   │   └── graphql_controller.rb
-│   ├── models/
-│   │   ├── author.rb            # STI base para autores
-│   │   ├── person_author.rb     # Autor pessoa
-│   │   ├── institution_author.rb # Autor instituição
-│   │   ├── material.rb          # STI base para materiais
-│   │   ├── book.rb              # Material tipo livro
-│   │   └── user.rb              # Modelo de usuário
-│   ├── graphql/                 # Schema GraphQL
-│   │   ├── types/
-│   │   ├── queries/
-│   │   └── mutations/
-│   └── serializers/             # Serializers JSON
-├── config/
-│   ├── routes.rb                # Definição de rotas
-│   ├── database.yml
-│   ├── initializers/
-│   │   ├── devise.rb
-│   │   └── rswag*.rb            # Configuração Swagger
-│   └── environments/
-├── db/
-│   ├── migrate/                 # Migrations do banco
-│   └── seeds.rb                 # Dados iniciais
-├── spec/                        # Testes RSpec
-│   ├── models/
-│   ├── requests/
-│   └── support/
-├── swagger/                     # Documentação OpenAPI
-├── coverage/                    # Relatórios de cobertura
-├── test_api.sh                  # Script de teste automatizado
-├── render.yaml                  # Configuração de deploy
-├── Gemfile
-└── README.md
-```
 
 ---
 
@@ -970,13 +826,7 @@ biblioteca_api/
 - ✅ **Rate limiting** (configurável)
 - ✅ **Validação de inputs** em todos os endpoints
 
-### Boas Práticas
 
-- Secrets nunca commitados (uso de variáveis de ambiente)
-- Tokens JWT com tempo de expiração
-- Refresh tokens implementáveis
-- Logs sanitizados (sem senhas ou tokens)
-- Validações no backend (nunca confiar apenas no frontend)
 
 ---
 
@@ -1016,62 +866,6 @@ biblioteca_api/
 
 ---
 
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Siga os passos abaixo:
-
-### 1. Fork o Projeto
-
-```bash
-# Clone seu fork
-git clone https://github.com/seu-usuario/biblioteca_api.git
-cd biblioteca_api
-```
-
-### 2. Crie uma Branch
-
-```bash
-git checkout -b feature/nova-funcionalidade
-```
-
-### 3. Faça suas Alterações
-
-```bash
-# Desenvolva sua feature
-# Adicione testes
-bundle exec rspec
-
-# Verifique a cobertura
-COVERAGE=true bundle exec rspec
-```
-
-### 4. Commit e Push
-
-```bash
-git add .
-git commit -m "feat: Adiciona nova funcionalidade X"
-git push origin feature/nova-funcionalidade
-```
-
-### 5. Abra um Pull Request
-
-- Descreva suas mudanças claramente
-- Referencie issues relacionadas
-- Aguarde review
-
-### Convenções de Commit
-
-Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-feat: Nova funcionalidade
-fix: Correção de bug
-docs: Atualização de documentação
-test: Adição ou modificação de testes
-refactor: Refatoração de código
-style: Mudanças de formatação
-chore: Tarefas de manutenção
-```
 
 ---
 
@@ -1092,128 +886,12 @@ Lines missed: 118
 Avg hits/line: 0.95
 ```
 
-### Como Gerar Relatório
 
-```bash
-# Executar testes com cobertura
-COVERAGE=true bundle exec rspec
 
-# Abrir relatório HTML
-open coverage/index.html
-```
 
-### Áreas com Alta Cobertura (>90%)
-
-- ✅ Models: 95%
-- ✅ Controllers: 88%
-- ✅ Serializers: 100%
-- ✅ GraphQL Types: 92%
-
-### Áreas para Melhoria (<80%)
-
-- ⚠️ Services: 75%
-- ⚠️ Jobs: 65%
-- ⚠️ Mailers: 70%
 
 ---
 
-## 🐛 Troubleshooting
-
-### Problemas Comuns
-
-#### 1. Erro ao conectar com banco de dados
-
-```bash
-# Verifique se o PostgreSQL está rodando
-sudo service postgresql status
-
-# Recrie o banco de dados
-rails db:drop db:create db:migrate db:seed
-```
-
-#### 2. Token JWT inválido ou expirado
-
-```bash
-# Faça login novamente para obter novo token
-export TOKEN="Bearer $(curl -s -X POST "$API_BASE/users/sign_in" \
-  -H "Content-Type: application/json" \
-  -d '{"user":{"email":"admin@biblioteca.com","password":"password123"}}' \
-  | jq -r '.token')"
-```
-
-#### 3. Erro 401 Unauthorized
-
-```bash
-# Verifique se o token está configurado
-echo $TOKEN
-
-# Verifique se está usando Bearer
-curl -I -H "Authorization: $TOKEN" "$API_BASE/api/v1/authors"
-```
-
-#### 4. Erro ao executar testes
-
-```bash
-# Prepare o banco de testes
-RAILS_ENV=test rails db:create db:migrate
-
-# Execute os testes
-bundle exec rspec
-```
-
-#### 5. Problemas com seeds em produção
-
-```bash
-# No console do Render, execute
-rails db:seed
-
-# Ou use o shell (plano pago)
-rails console
-User.create!(email: 'admin@biblioteca.com', password: 'password123')
-```
-
----
-
-## 📈 Roadmap
-
-### Versão Atual (1.0.0) ✅
-
-- [x] API RESTful completa
-- [x] Autenticação JWT via Devise
-- [x] Sistema STI para autores e materiais
-- [x] GraphQL implementado
-- [x] Testes com >80% cobertura
-- [x] Deploy em produção
-- [x] Documentação Swagger
-
-### Próximas Features (2.0.0) 🚀
-
-- [ ] Sistema de empréstimos de materiais
-- [ ] Sistema de reservas
-- [ ] Histórico de movimentações
-- [ ] Notificações por email
-- [ ] Busca avançada com Elasticsearch
-- [ ] Rate limiting por usuário
-- [ ] Versionamento de API (v2)
-- [ ] Webhooks para eventos
-- [ ] Dashboard administrativo
-- [ ] Relatórios e estatísticas
-- [ ] API de busca em bibliotecas externas
-- [ ] Sistema de multas e pagamentos
-
-### Melhorias Técnicas Planejadas
-
-- [ ] Aumentar cobertura de testes para 95%+
-- [ ] Implementar cache com Redis
-- [ ] Background jobs com Sidekiq
-- [ ] Monitoramento com New Relic/Datadog
-- [ ] Logs estruturados com Lograge
-- [ ] Implementar CI/CD completo
-- [ ] Docker e Kubernetes
-- [ ] Testes de performance com K6
-- [ ] Documentação de arquitetura (ADRs)
-
----
 
 ## 📄 Licença
 
@@ -1258,7 +936,7 @@ SOFTWARE.
 
 ## 🙏 Agradecimentos
 
-Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **Desenvolvedor Backend Ruby on Rails**.
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **Desenvolvedor Backend Ruby on Rails**. :)
 
 ### Tecnologias que tornaram este projeto possível:
 
@@ -1279,35 +957,12 @@ Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **D
 
 ## 📞 Suporte
 
-### Documentação
-
-- **Swagger UI**: https://biblioteca-api-aibp.onrender.com/docs
-- **API Docs**: https://biblioteca-api-aibp.onrender.com/api-docs
 
 ### Contato
 
-- **Issues**: https://github.com/mms-11/biblioteca_api/issues
-- **Discussions**: https://github.com/mms-11/biblioteca_api/discussions
-- **Email**: mariana.silva@email.com
 
-### FAQ
+- **Email**: mari.ms2002@hotmail.com
 
-**P: Como obtenho acesso de admin?**
-R: Use as credenciais: `admin@biblioteca.com` / `password123`
-
-**P: A API tem rate limiting?**
-R: Sim, configurável. Padrão: 100 requisições/minuto por IP.
-
-**P: Posso usar em produção?**
-R: Sim! A API está rodando em produção no Render.
-
-**P: Como reporto um bug?**
-R: Abra uma issue no GitHub com detalhes e passos para reproduzir.
-
-**P: Vocês aceitam contribuições?**
-R: Sim! Veja a seção [Contribuindo](#-contribuindo).
-
----
 
 ## 📊 Status do Projeto
 
@@ -1330,39 +985,6 @@ R: Sim! Veja a seção [Contribuindo](#-contribuindo).
 
 ---
 
-## 🎯 Métricas do Projeto
-
-### Código
-
-- **Linhas de código**: ~3.500
-- **Arquivos**: 48
-- **Commits**: 150+
-- **Branches**: 8
-- **Pull Requests**: 25
-
-### Testes
-
-- **Total de testes**: 48 specs
-- **Tempo de execução**: ~3s
-- **Cobertura**: 86.78%
-- **Taxa de sucesso**: 100%
-
-### Performance
-
-- **Tempo de resposta médio**: <100ms
-- **P95 response time**: 250ms
-- **P99 response time**: 500ms
-- **Uptime**: 99.9%
-
-### Deploy
-
-- **Plataforma**: Render
-- **Região**: US East
-- **Banco de dados**: PostgreSQL 14
-- **Ambiente**: Production
-- **Auto-deploy**: Sim (main branch)
-
----
 
 ## 🔗 Links Úteis
 
@@ -1391,7 +1013,7 @@ R: Sim! Veja a seção [Contribuindo](#-contribuindo).
 
 <div align="center">
 
-### ⭐ Se este projeto foi útil, considere dar uma estrela no GitHub!
+
 
 **Desenvolvido com ❤️ usando Ruby on Rails**
 
