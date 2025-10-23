@@ -1,42 +1,34 @@
 Rails.application.routes.draw do
-  # =========================
-  # 📘 Documentação Swagger
-  # =========================
+  # Swagger (documentação)
   mount Rswag::Api::Engine => '/api-docs'
   mount Rswag::Ui::Engine  => '/docs'
+  root to: ->(env) { [200, {}, ["Biblioteca API is running!"]] }
 
-  # =========================
-  # Página inicial / Healthcheck
-  # =========================
-  # Root simples
-  root to: proc { [200, { 'Content-Type' => 'text/plain' }, ['Biblioteca API is running!']] }
-
-  # Health check para Render (usa rota padrão do Rails)
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # =========================
-  # Autenticação (Devise JSON)
-  # =========================
-  devise_for :users,
-    defaults: { format: :json },
-    controllers: {
-      sessions: 'users/sessions',
-      registrations: 'users/registrations'
-    }
-
-  # =========================
-  #  GraphQL endpoint
-  # =========================
+  # GraphQL
   post "/graphql", to: "graphql#execute"
 
-  # =========================
-  # API REST v1
-  # =========================
+  # Autenticação Devise (JSON)
+  devise_for :users, 
+    defaults: { format: :json },
+    controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+
+  # Health check
+  get "up" => "rails/health#show", as: :rails_health_check
+    # Health check / Status
+  get '/', to: proc { [200, {}, ['API is running! Visit /api-docs for documentation']] }
+
+  # Namespace da API 
   namespace :api do
     namespace :v1 do
-      resources :authors      # /api/v1/authors
-      resources :materials    # /api/v1/materials
+      resources :authors          # rotas para autores GET/POST /api/v1/authors, /api/v1/authors/:id
+      resources :materials        # rotas para materiais GET/POST /api/v1/materials, GET/PATCH/DELETE /api/v1/materials/:id
       get "ping", to: "ping#index"
     end
   end
+
+  # root 
+  # root "api/v1/ping#index"
 end
