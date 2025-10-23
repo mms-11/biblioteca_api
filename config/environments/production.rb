@@ -86,8 +86,6 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
 
-  # Configurar Solid Cable para usar o mesmo banco de dados principal
- config.solid_cable.database = ActiveRecord::Base.connection_db_config
 
 #  Solid Queue para usar a mesma conexão
   #config.solid_queue.connects_to = { database: { writing: :primary } }
