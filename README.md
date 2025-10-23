@@ -134,6 +134,139 @@ Senha: password123
 Email: usuario@biblioteca.com
 Senha: password123
 ```
+---
+## 🧪 Testes
+
+### Executar Testes
+
+```bash
+# Todos os testes
+bundle exec rspec
+
+# Testes específicos por tipo
+bundle exec rspec spec/models
+bundle exec rspec spec/requests
+bundle exec rspec spec/controllers
+
+# Com relatório de cobertura
+COVERAGE=true bundle exec rspec
+
+# Ver relatório HTML
+open coverage/index.html
+```
+
+### Estatísticas de Testes
+
+- **Total de testes**: 48 exemplos
+- **Cobertura de linha**: 86.78%
+- **Cobertura de branch**: 54.55%
+- **Tempo de execução**: ~3 segundos
+- **Falhas**: 0
+
+### Áreas Testadas
+
+#### Models
+- ✅ Validações de campos obrigatórios
+- ✅ Validações de formatos (email, ISBN)
+- ✅ Associações entre modelos
+- ✅ Callbacks e métodos personalizados
+- ✅ STI (Single Table Inheritance)
+- ✅ Scopes e queries
+
+#### Controllers/Requests
+- ✅ Autenticação e autorização
+- ✅ CRUD completo de todos os recursos
+- ✅ Respostas HTTP corretas
+- ✅ Validação de permissões por role
+- ✅ Tratamento de erros
+- ✅ Formatação JSON
+
+#### Services
+- ✅ Lógica de negócio
+- ✅ Integração com API externa
+- ✅ Processamento de dados
+
+#### GraphQL
+- ✅ Queries de listagem
+- ✅ Queries de busca por ID
+- ✅ Mutations (quando aplicável)
+- ✅ Tratamento de erros
+
+---
+
+## 🧪 Script de Teste Automatizado
+
+A API inclui um script completo para validar todos os endpoints e funcionalidades.
+
+### Executar o Script
+
+```bash
+# 1. Dê permissão de execução
+chmod +x test_api.sh
+
+# 2. Execute
+./test_api.sh
+```
+
+### O que o Script Testa
+
+- ✅ **Health Check** - Verifica se a API está online
+- ✅ **Autenticação** - Login e obtenção de token JWT
+- ✅ **Listagem** - Autores e materiais
+- ✅ **Criação** - Novos autores e materiais
+- ✅ **GraphQL** - Queries e consultas
+- ✅ **Logout** - Encerramento de sessão
+
+### Exemplo de Saída
+
+```
+🚀 Testando Biblioteca API
+================================
+
+📋 Setup inicial
+✅ API Base: https://biblioteca-api-aibp.onrender.com
+
+🏥 Health Check
+✅ API está online!
+
+🔐 Fazendo login como Admin
+✅ Token obtido com sucesso!
+
+📚 Listando autores (primeiros 3)
+Total de autores: 13
+
+📖 Listando materiais (primeiros 3)
+Total de materiais: 2
+
+➕ Criando novo autor (Isaac Asimov)
+✅ Autor criado com sucesso!
+
+📚 Criando novo material (Livro)
+✅ Material criado com sucesso!
+
+🔮 Testando GraphQL
+✅ GraphQL funcionando!
+
+🚪 Testando logout
+✅ Logout realizado com sucesso!
+
+================================
+🎉 Todos os testes concluídos!
+
+📊 Resumo:
+  • API Online: ✅
+  • Autenticação: ✅
+  • Autores: 13 registrados
+  • Materiais: 2 registrados
+  • GraphQL: ✅
+  • CRUD: ✅
+
+📚 Documentação completa:
+  • Swagger: https://biblioteca-api-aibp.onrender.com/docs
+  • API Docs: https://biblioteca-api-aibp.onrender.com/api-docs
+
+✨ Biblioteca API está funcionando perfeitamente!
+```
 
 ---
 
@@ -312,79 +445,6 @@ open coverage/index.html
 
 ---
 
-## 🧪 Script de Teste Automatizado
-
-A API inclui um script completo para validar todos os endpoints e funcionalidades.
-
-### Executar o Script
-
-```bash
-# 1. Dê permissão de execução
-chmod +x test_api.sh
-
-# 2. Execute
-./test_api.sh
-```
-
-### O que o Script Testa
-
-- ✅ **Health Check** - Verifica se a API está online
-- ✅ **Autenticação** - Login e obtenção de token JWT
-- ✅ **Listagem** - Autores e materiais
-- ✅ **Criação** - Novos autores e materiais
-- ✅ **GraphQL** - Queries e consultas
-- ✅ **Logout** - Encerramento de sessão
-
-### Exemplo de Saída
-
-```
-🚀 Testando Biblioteca API
-================================
-
-📋 Setup inicial
-✅ API Base: https://biblioteca-api-aibp.onrender.com
-
-🏥 Health Check
-✅ API está online!
-
-🔐 Fazendo login como Admin
-✅ Token obtido com sucesso!
-
-📚 Listando autores (primeiros 3)
-Total de autores: 13
-
-📖 Listando materiais (primeiros 3)
-Total de materiais: 2
-
-➕ Criando novo autor (Isaac Asimov)
-✅ Autor criado com sucesso!
-
-📚 Criando novo material (Livro)
-✅ Material criado com sucesso!
-
-🔮 Testando GraphQL
-✅ GraphQL funcionando!
-
-🚪 Testando logout
-✅ Logout realizado com sucesso!
-
-================================
-🎉 Todos os testes concluídos!
-
-📊 Resumo:
-  • API Online: ✅
-  • Autenticação: ✅
-  • Autores: 13 registrados
-  • Materiais: 2 registrados
-  • GraphQL: ✅
-  • CRUD: ✅
-
-📚 Documentação completa:
-  • Swagger: https://biblioteca-api-aibp.onrender.com/docs
-  • API Docs: https://biblioteca-api-aibp.onrender.com/api-docs
-
-✨ Biblioteca API está funcionando perfeitamente!
-```
 
 ---
 
@@ -744,53 +804,10 @@ services:
       bundle exec puma -C config/puma.rb
 ```
 
-#### Variáveis de Ambiente (Render)
 
-Configure no painel do Render:
-
-```env
-RAILS_ENV=production
-RACK_ENV=production
-SECRET_KEY_BASE=(auto-gerado)
-JWT_SECRET=(auto-gerado)
-DEVISE_JWT_SECRET_KEY=(auto-gerado)
-DATABASE_URL=(fornecido pelo Render)
-RAILS_LOG_TO_STDOUT=true
-RAILS_SERVE_STATIC_FILES=true
-```
-
-#### Deploy Manual
-
-```bash
-# 1. Build
-bundle install --without development test
-RAILS_ENV=production rails assets:precompile
-
-# 2. Database
-RAILS_ENV=production rails db:migrate
-RAILS_ENV=production rails db:seed
-
-# 3. Start
-RAILS_ENV=production bundle exec puma -C config/puma.rb
-```
-
----
 
 ## 📚 Documentação Adicional
 
-### Swagger UI
-
-Acesse a documentação visual interativa:
-- **URL**: https://biblioteca-api-aibp.onrender.com/docs
-- **Recursos**: Teste todos os endpoints diretamente pelo navegador
-- **Autenticação**: Clique em "Authorize" e faça login
-
-### Especificação OpenAPI
-
-JSON da especificação disponível em:
-- **URL**: https://biblioteca-api-aibp.onrender.com/api-docs/v1/swagger.yaml
-- **Formato**: OpenAPI 3.0
-- **Uso**: Importar em ferramentas como Postman, Insomnia
 
 ### Postman Collection
 
@@ -924,12 +941,10 @@ SOFTWARE.
 
 ## 👤 Autora
 
-**Mariana Silva**
+**Mariana Melo dos Santos**
 
 - 💻 GitHub: [@mms-11](https://github.com/mms-11)
-- 📧 Email: mariana.silva@email.com
-- 💼 LinkedIn: [Mariana Silva](https://linkedin.com/in/mariana-silva)
-- 🌐 Portfolio: [mariana.dev](https://mariana.dev)
+- 📧 Email: mari.ms2002@hotmail.com
 
 ---
 
@@ -958,8 +973,6 @@ Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **D
 
 
 ### Contato
-
-
 - **Email**: mari.ms2002@hotmail.com
 
 
@@ -987,13 +1000,6 @@ Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **D
 
 ## 🔗 Links Úteis
 
-### Projeto
-
-- [Repositório no GitHub](https://github.com/mms-11/biblioteca_api)
-- [API em Produção](https://biblioteca-api-aibp.onrender.com)
-- [Documentação Swagger](https://biblioteca-api-aibp.onrender.com/docs)
-- [Issues e Bugs](https://github.com/mms-11/biblioteca_api/issues)
-
 ### Recursos
 
 - [Ruby on Rails](https://rubyonrails.org/)
@@ -1001,12 +1007,6 @@ Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **D
 - [GraphQL Ruby](https://graphql-ruby.org/)
 - [RSpec](https://rspec.info/)
 - [Render](https://render.com/)
-
-### Comunidade
-
-- [Rails Forum](https://discuss.rubyonrails.org/)
-- [Ruby Discord](https://discord.gg/ruby)
-- [Stack Overflow - Rails](https://stackoverflow.com/questions/tagged/ruby-on-rails)
 
 ---
 
