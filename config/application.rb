@@ -12,6 +12,7 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
+require "solid_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -20,6 +21,11 @@ Bundler.require(*Rails.groups)
 
 module BibliotecaApi
   class Application < Rails::Application
+       if Rails.env.production?
+      config.after_initialize do
+        SolidCable.connection_class = ActiveRecord::Base
+      end
+    end
   
     config.active_record.query_log_tags_enabled = true
     config.active_record.query_log_tags = [
