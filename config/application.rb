@@ -20,11 +20,7 @@ Bundler.require(*Rails.groups)
 
 module BibliotecaApi
   class Application < Rails::Application
-      if Rails.env.production?
-      config.after_initialize do
-        SolidCable.connection_class = ActiveRecord::Base
-      end
-    end
+  
     config.active_record.query_log_tags_enabled = true
     config.active_record.query_log_tags = [
       # Rails query log tags:
