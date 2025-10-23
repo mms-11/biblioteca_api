@@ -6,7 +6,7 @@ API_BASE="https://biblioteca-api-aibp.onrender.com"
 echo "🚀 Smoke tests — Biblioteca API"
 
 # ---------- login ----------
-echo "🔐 Login..."
+echo "z Login..."
 TOKEN=$(
   curl -fsS -X POST "$API_BASE/users/sign_in" \
     -H "Content-Type: application/json" \
