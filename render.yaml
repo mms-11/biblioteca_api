@@ -5,6 +5,7 @@ services: ##criar instancia do bd e injeta a base de dados da api
     plan: free
     buildCommand: |
       bundle install
+      bundle exec rails db:migrate
     startCommand: |
       bundle exec puma -C config/puma.rb
     autoDeploy: true
@@ -19,8 +20,6 @@ services: ##criar instancia do bd e injeta a base de dados da api
         fromDatabase:
           name: biblioteca-db
           property: connectionString
-    preDeployCommand: |
-      bundle exec rails db:migrate
 
 databases:
   - name: biblioteca-db
