@@ -937,12 +937,21 @@ Este projeto foi desenvolvido como parte do processo seletivo para a vaga de **D
 **📚 Biblioteca API** | v1.0.0 | Outubro 2024
 
 [⬆ Voltar ao topo](#-biblioteca-api)
-Exemplos de uso:
+Exemplos de uso: testes automatizados ok, documentação disponivel na url de produção, e a geração do arquivo para o postman interativo"
 <img width="1500" height="674" alt="Captura de tela 2025-10-23 203417" src="https://github.com/user-attachments/assets/6823a305-9a9e-4bcf-85b8-58d1deee46ae" />
 
 <img width="1919" height="954" alt="Captura de tela 2025-10-23 203429" src="https://github.com/user-attachments/assets/8caf713b-22e8-4434-88f8-94eac2f41d3e" />
 
 <img width="1417" height="792" alt="image" src="https://github.com/user-attachments/assets/8d689d62-76f0-40c0-830d-feb890e3a06d" />
+
+🧩 Exemplos de Uso
+
+✅ Testes automatizados concluídos com sucesso
+✅ Documentação Swagger disponível em produção
+✅ Geração de arquivo Postman interativo a partir da especificação OpenAPI
+
+<img width="1500" height="674" alt="Swagger UI" src="https://github.com/user-attachments/assets/6823a305-9a9e-4bcf-85b8-58d1deee46ae" /> <img width="1919" height="954" alt="Swagger Executando" src="https://github.com/user-attachments/assets/8caf713b-22e8-4434-88f8-94eac2f41d3e" /> <img width="1417" height="792" alt="Postman Interativo" src="https://github.com/user-attachments/assets/8d689d62-76f0-40c0-830d-feb890e3a06d" />
+</div>
 
 
 </div>
