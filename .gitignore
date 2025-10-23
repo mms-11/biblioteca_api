@@ -92,3 +92,5 @@ Desktop.ini
 node_modules/
 yarn-debug.log*
 npm-debug.log*
+
+/config/credentials/production.key

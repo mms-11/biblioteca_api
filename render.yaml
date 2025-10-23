@@ -1,4 +1,5 @@
-services: ##criar instancia do bd e injeta a base de dados da api
+# gerar deploy no render e conectar com o banco da api
+services:
   - type: web
     name: biblioteca-api
     env: ruby
@@ -19,9 +20,7 @@ services: ##criar instancia do bd e injeta a base de dados da api
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_URL
-        fromDatabase:
-          name: biblioteca-db
-          property: connectionString
+        value: postgresql://biblioteca_db_r3jq_user:uCaMUk0lkO3vgdD1HqlScB3rdNRFY2qF@dpg-d3su1aruibrs73aj54eg-a/biblioteca_db_r3jq
 
 databases:
   - name: biblioteca-db
