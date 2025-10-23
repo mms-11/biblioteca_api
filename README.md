@@ -261,9 +261,7 @@ Total de materiais: 2
   • GraphQL: ✅
   • CRUD: ✅
 
-📚 Documentação completa:
-  • Swagger: https://biblioteca-api-aibp.onrender.com/docs
-  • API Docs: https://biblioteca-api-aibp.onrender.com/api-docs
+
 
 ✨ Biblioteca API está funcionando perfeitamente!
 ```
