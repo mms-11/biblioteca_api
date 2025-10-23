@@ -84,4 +84,14 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+
+  # Configurar Solid Cable para usar o mesmo banco de dados principal
+  config.solid_cable.database = ActiveRecord::Base.connection_db_config
+
+#  Solid Queue para usar a mesma conexão
+  config.solid_queue.connects_to = { database: { writing: :primary } }
+
+#  Solid Cache para usar o mesmo banco
+  config.solid_cache.connects_to = { database: { writing: :primary } }
 end
