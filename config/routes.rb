@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
+    # Health check / Status
+  get '/', to: proc { [200, {}, ['API is running! Visit /api-docs for documentation']] }
 
   # Namespace da API 
   namespace :api do
