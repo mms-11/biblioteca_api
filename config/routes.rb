@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # Swagger (documentação)
   mount Rswag::Api::Engine => '/api-docs'
   mount Rswag::Ui::Engine  => '/docs'
+  
   root to: ->(env) { [200, {}, ["Biblioteca API is running!"]] }
 
   # GraphQL
