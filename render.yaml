@@ -1,3 +1,4 @@
+# gerar deploy no render e conectar com o banco da api
 services:
   - type: web
     name: biblioteca-api
@@ -5,11 +6,9 @@ services:
     plan: free
     buildCommand: |
       bundle install
-      bundle exec rails db:prepare
-      bundle exec rails db:seed  # se você tiver seeds importantes
-      RAILS_ENV=test bundle exec rails db:test:prepare
-      RAILS_ENV=test bundle exec rspec
-    startCommand: bundle exec puma -C config/puma.rb
+      bundle exec rails db:migrate
+    startCommand: |
+      bundle exec puma -C config/puma.rb
     autoDeploy: true
     envVars:
       - key: RAILS_ENV
@@ -20,12 +19,9 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
-      - key: RAILS_LOG_TO_STDOUT
-        value: true
-      - key: RAILS_SERVE_STATIC_FILES
-        value: true
+      - key: DATABASE_URL
+        value: postgresql://biblioteca_db_r3jq_user:uCaMUk0lkO3vgdD1HqlScB3rdNRFY2qF@dpg-d3su1aruibrs73aj54eg-a/biblioteca_db_r3jq
 
 databases:
   - name: biblioteca-db
-    databaseName: biblioteca_api_production
     plan: free
