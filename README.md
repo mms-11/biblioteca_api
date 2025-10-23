@@ -331,12 +331,7 @@ curl -X POST "$API_BASE/users" \
   }'
 ```
 
-### Fazer Logout
 
-```bash
-curl -X DELETE "$API_BASE/users/sign_out" \
-  -H "Authorization: $TOKEN"
-```
 
 ---
 
@@ -699,83 +694,6 @@ curl -X POST "$API_BASE/graphql" \
     "query": "{ material(id: \"1\") { id title status author { name type } } }"
   }' | jq .
 ```
-
-### Queries Disponíveis
-
-```graphql
-# Listar todos os autores
-{
-  authors {
-    id
-    name
-    type
-    ... on PersonAuthor {
-      birthdate
-    }
-    ... on InstitutionAuthor {
-      city
-    }
-  }
-}
-
-# Buscar autor por ID
-{
-  author(id: "1") {
-    id
-    name
-    type
-  }
-}
-
-# Listar todos os materiais
-{
-  materials {
-    id
-    title
-    type
-    status
-    author {
-      name
-      type
-    }
-  }
-}
-
-# Buscar material por ID
-{
-  material(id: "1") {
-    id
-    title
-    description
-    status
-    author {
-      name
-    }
-  }
-}
-```
-
-### Mutations (se implementadas)
-
-```graphql
-# Criar autor
-mutation {
-  createAuthor(input: {
-    type: "PersonAuthor",
-    name: "J.K. Rowling",
-    birthdate: "1965-07-31"
-  }) {
-    author {
-      id
-      name
-      type
-    }
-  }
-}
-```
-
----
-
 
 
 ## 🚀 Deploy
