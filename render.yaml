@@ -1,4 +1,4 @@
-services: ##criar instancia do bd e injeta a base de dadso da api
+services: ##criar instancia do bd e injeta a base de dados da api
   - type: web
     name: biblioteca-api
     env: ruby
@@ -19,8 +19,9 @@ services: ##criar instancia do bd e injeta a base de dadso da api
         fromDatabase:
           name: biblioteca-db
           property: connectionString
-    postDeployCommand: |
+    preDeployCommand: |
       bundle exec rails db:migrate
+
 databases:
   - name: biblioteca-db
     plan: free
