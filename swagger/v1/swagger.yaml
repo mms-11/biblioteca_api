@@ -7,6 +7,10 @@ info:
 servers:
 - url: http://localhost:3000
   description: Dev
+- url: https://biblioteca-api-aibp.onrender.com
+  description: Production
+
+
 components:
   securitySchemes:
     bearerAuth:
