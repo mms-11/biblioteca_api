@@ -14,6 +14,8 @@ Rails.application.configure do
   # recommended that you enable it in continuous integration systems to ensure eager
   # loading is working properly before deploying your code.
   config.eager_load = ENV["CI"].present?
+  Warden::JWTAuth.config.secret = ENV['DEVISE_JWT_SECRET_KEY'] || 'test_secret'
+
 
   # Configure public file server for tests with cache-control for performance.
   config.public_file_server.headers = { "cache-control" => "public, max-age=3600" }
