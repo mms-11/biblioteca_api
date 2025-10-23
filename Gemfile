@@ -12,6 +12,8 @@ gem "solid_cable"
 gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
+gem "solid_cable"
+
 
 # --- API / Auth / Segurança ---
 gem "devise"
