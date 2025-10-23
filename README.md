@@ -1,18 +1,48 @@
-# Biblioteca API (Rails 8 · Postgres)
+# 📚 Biblioteca API
 
-API RESTful para gerenciar uma biblioteca digital com autenticação JWT (Devise + devise-jwt), autorização (Pundit), busca/paginação, consumo da OpenLibrary, GraphQL e documentação Swagger (RSwag).
+![Tests](https://github.com/mms-11/biblioteca_api/actions/workflows/ci.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-86.78%25-brightgreen)
 
-## Stack
-- Ruby 3.3 / Rails 8
-- PostgreSQL
-- Devise + devise-jwt
-- Pundit
-- GraphQL (graphql-ruby)
-- RSwag (OpenAPI/Swagger)
-- RSpec (+ WebMock)
+API RESTful para gerenciamento de biblioteca com autenticação JWT, múltiplos tipos de materiais e integração com API externa.
 
-## Setup
+## 🚀 Deploy
+
+**URL da API:** [https://biblioteca-api.onrender.com](sua-url-aqui)
+
+**Documentação Swagger:** [https://biblioteca-api.onrender.com/api-docs](sua-url-aqui/api-docs)
+
+## ✨ Funcionalidades Principais
+
+- ✅ Autenticação JWT (Admin, Bibliotecário, Usuário)
+- ✅ CRUD de Materiais (Livros, Revistas, DVDs, etc.)
+- ✅ Sistema de Status (disponível, emprestado, reservado)
+- ✅ Busca e Paginação
+- ✅ Integração com API externa para cadastro
+- ✅ Testes com 86.78% de cobertura
+- ✅ Documentação Swagger interativa
+
+## 🧪 Testes
 ```bash
-cp .env.example .env 
-bin/setup            #  bundle && bin/rails db:setup
-bin/dev              # inicia servidor (http://localhost:3000)
+# Rodar todos os testes
+bundle exec rspec
+
+# Ver relatório de cobertura
+open coverage/index.html
+```
+
+**Resultado dos testes:**
+- ✅ 48 testes passando
+- ✅ 86.78% de cobertura de linha
+- ✅ 54.55% de cobertura de branch
+```
+
+### 4. **Configurar variáveis de ambiente no Render**
+
+No painel do Render, adicione:
+```
+RAILS_ENV=production
+RACK_ENV=production
+SECRET_KEY_BASE=(auto-gerado)
+JWT_SECRET=(auto-gerado)
+RAILS_LOG_TO_STDOUT=true
+RAILS_SERVE_STATIC_FILES=true
