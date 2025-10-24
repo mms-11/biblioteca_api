@@ -48,6 +48,7 @@ API RESTful completa para gerenciamento de biblioteca com autenticação JWT via
 - [Configuração](#️-configuração)
 - [Autenticação](#-autenticação)
 - [Endpoints da API](#-endpoints-da-api)
+- Regras de Negócio
 - [Script de Teste Automatizado](#-script-de-teste-automatizado)
 - [Testes](#-testes)
 - [Exemplos Práticos](#-exemplos-práticos)
@@ -193,6 +194,85 @@ open coverage/index.html
 - ✅ Tratamento de erros
 
 ---
+
+## 📖 Regras de Negócio
+
+### Sistema de Autores (STI - Single Table Inheritance)
+
+A API implementa herança de tabela única para autores:
+
+#### 1. PersonAuthor (Autor Pessoa)
+- **Campos**: `name`, `birthdate`
+- **Uso**: Autores individuais (escritores, pesquisadores)
+- **Exemplo**: George Orwell, Isaac Asimov, J.K. Rowling
+
+#### 2. InstitutionAuthor (Autor Instituição)
+- **Campos**: `name`, `city`
+- **Uso**: Organizações, universidades, editoras
+- **Exemplo**: MIT, Stanford University, IEEE
+
+#### Validações de Autores
+- Nome obrigatório (mínimo 3 caracteres)
+- Type deve ser "PersonAuthor" ou "InstitutionAuthor"
+- Birthdate deve ser no passado (PersonAuthor)
+- Nome único por tipo
+
+---
+
+### Sistema de Materiais
+
+#### Tipos de Materiais
+A API suporta múltiplos tipos através de STI:
+
+1. **Book (Livro)**
+   - Campos específicos: `isbn`, `page_count`
+   - Validação de ISBN único
+
+2. **Article (Revista)**
+   - Campos específicos: `doi`
+
+3. **Video**
+   - Campos específicos: `duration_minutes`
+
+#### Campos Comuns
+- `title` (obrigatório, mínimo 3 caracteres)
+- `type` (obrigatório)
+- `description` (opcional)
+- `status` (obrigatório)
+- `author_id` (obrigatório - relacionamento)
+
+#### Status dos Materiais
+- `draft` - Rascunho, ainda não publicado
+- `published` - Publicado e disponível
+- `archived` - Arquivado, não disponível
+
+#### Validações
+- Título obrigatório e único
+- Type obrigatório
+- ISBN único (quando informado)
+- Material deve ter um autor associado
+- Status deve ser um dos valores válidos
+
+---
+
+### Associações
+
+```
+Author (STI)
+├── PersonAuthor
+│   └── has_many :materials
+└── InstitutionAuthor
+    └── has_many :materials
+
+Material (STI)
+├── Book
+├── Article
+└── Video
+    └── belongs_to :author (polimórfico via STI)
+```
+
+---
+
 
 ## 🧪 Script de Teste Automatizado
 
