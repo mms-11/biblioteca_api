@@ -40,4 +40,4 @@ group :development, :test do
   gem 'simplecov', require: false
 end
 
-gem "webmock", "~> 3.25", groups: [:development, :test]
+gem "webmock", "~> 3.26", groups: [:development, :test]

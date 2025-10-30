@@ -422,7 +422,7 @@ GEM
       dry-configurable (>= 0.13, < 2)
       jwt (>= 2.1, < 4)
       warden (~> 1.2)
-    webmock (3.25.1)
+    webmock (3.26.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -472,7 +472,7 @@ DEPENDENCIES
   solid_queue
   thruster
   tzinfo-data
-  webmock (~> 3.25)
+  webmock (~> 3.26)
 
 BUNDLED WITH
    2.7.2
